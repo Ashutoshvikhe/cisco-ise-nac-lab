@@ -44,7 +44,21 @@ The lab implements:
 
 ## Topology Diagram
 
-The topology diagram is included in this folder.
+![Enterprise NAC Network Topology](enterprise-nac-topology.png)
+
+The diagram illustrates the enterprise NAC architecture, including:
+
+- NAC-R1 router
+- NAC-SW1 Cisco Catalyst switch
+- ISE-RADIUS server
+- Corporate endpoint
+- Guest endpoint
+- Administrative endpoint
+- VLAN segmentation
+- 802.1X authentication
+- RADIUS authentication
+- Router-on-a-Stick inter-VLAN routing
+- Guest network ACL restrictions
 
 ## Traffic Flow
 

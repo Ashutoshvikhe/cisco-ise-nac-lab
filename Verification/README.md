@@ -1,307 +1,329 @@
-ENTERPRISE CISCO NAC LAB
-VERIFICATION RESULTS
-=====================
+# Network Verification
 
+## Overview
 
-1. ROUTER INTERFACE VERIFICATION
---------------------------------
+This folder contains verification results from the enterprise Cisco NAC lab.
+
+The verification process confirms that the configured VLANs, routing, trunking, AAA, RADIUS, 802.1X, SSH, and ACL security controls are configured and operational.
+
+## Verification Summary
+
+| Component | Status |
+|-----------|--------|
+| VLAN Segmentation | ✅ Verified |
+| Router-on-a-Stick | ✅ Verified |
+| Inter-VLAN Routing | ✅ Verified |
+| Management VLAN | ✅ Verified |
+| 802.1X Configuration | ✅ Verified |
+| RADIUS Integration | ✅ Configured |
+| AAA | ✅ Configured |
+| SSH Version 2 | ✅ Verified |
+| VTY Access Control | ✅ Configured |
+| Guest ACL | ✅ Verified |
+| Configuration Backup | ✅ Verified |
+| OSPF | Not Implemented |
+| EtherChannel | Not Implemented |
+
+## Router Verification
+
+### Interface Status
 
 Command:
 
+```text
 show ip interface brief
+```
 
-Expected / Verified Interfaces:
+The following router subinterfaces were verified:
 
-GigabitEthernet0/0       unassigned      up      up
-GigabitEthernet0/0.10    10.10.10.1      up      up
-GigabitEthernet0/0.20    10.10.20.1      up      up
-GigabitEthernet0/0.30    10.10.30.1      up      up
-GigabitEthernet0/0.99    10.10.99.1      up      up
+| Interface | IP Address | Status |
+|-----------|------------|--------|
+| G0/0.10 | 10.10.10.1 | Up/Up |
+| G0/0.20 | 10.10.20.1 | Up/Up |
+| G0/0.30 | 10.10.30.1 | Up/Up |
+| G0/0.99 | 10.10.99.1 | Up/Up |
 
-The four VLAN subinterfaces are operational.
-
-
-2. ROUTING TABLE VERIFICATION
------------------------------
+### Routing Table
 
 Command:
 
+```text
 show ip route
+```
 
-Verified connected networks:
+The following networks are directly connected:
 
+```text
 10.10.10.0/24
 10.10.20.0/24
 10.10.30.0/24
 10.10.99.0/24
+```
 
-All four VLAN networks are directly connected to NAC-R1.
+## Switch Verification
 
-
-3. SWITCH VLAN VERIFICATION
----------------------------
+### VLAN Verification
 
 Command:
 
+```text
 show vlan brief
+```
 
 Verified VLANs:
 
-VLAN 10    CORPORATE
-VLAN 20    GUEST
-VLAN 30    ADMIN
-VLAN 99    MANAGEMENT
+| VLAN | Name | Port |
+|------|------|------|
+| 10 | CORPORATE | Fa0/2 |
+| 20 | GUEST | Fa0/3 |
+| 30 | ADMIN | Fa0/4 |
+| 99 | MANAGEMENT | Fa0/1 |
 
-Port assignments:
-
-Fa0/1    VLAN 99
-Fa0/2    VLAN 10
-Fa0/3    VLAN 20
-Fa0/4    VLAN 30
-
-
-4. TRUNK VERIFICATION
----------------------
+### Trunk Verification
 
 Command:
 
+```text
 show interfaces trunk
+```
 
 Verified trunk:
 
+```text
 GigabitEthernet0/1
+```
 
-Operational mode:
-trunking
+The trunk uses:
 
-Encapsulation:
+```text
 802.1Q
+```
 
-Active VLANs:
+Active VLANs include:
 
+```text
 1, 10, 20, 30, 99
+```
 
+## AAA and RADIUS Verification
 
-5. MANAGEMENT IP VERIFICATION
------------------------------
-
-Command:
-
-show ip interface brief
-
-Verified:
-
-NAC-SW1 VLAN 99:
-10.10.99.2
-
-NAC-R1 VLAN 99:
-10.10.99.1
-
-ISE-RADIUS:
-10.10.99.10
-
-
-6. SSH VERIFICATION
--------------------
+### AAA
 
 Command:
 
-show ip ssh
-
-Verified:
-
-SSH Enabled - version 2.0
-
-Authentication timeout:
-120 seconds
-
-Authentication retries:
-3
-
-
-7. AAA VERIFICATION
--------------------
-
-Command:
-
+```text
 show running-config | section aaa
+```
 
-Verified:
+Configured authentication methods include:
 
+```text
 aaa new-model
-
 aaa authentication dot1x default group radius
-
 aaa authentication login RADIUS_AUTH group radius local
+```
 
-
-8. RADIUS VERIFICATION
-----------------------
+### RADIUS
 
 Command:
 
+```text
 show running-config | include radius
+```
 
 Configured RADIUS server:
 
+```text
 10.10.99.10
+```
 
-Authentication port:
+The RADIUS shared secret is not published in this repository.
 
-1645
-
-The RADIUS shared secret is intentionally not included.
-
-
-9. 802.1X VERIFICATION
-----------------------
+## 802.1X Verification
 
 Command:
 
+```text
 show running-config | include dot1x
+```
 
 Verified:
 
+```text
 dot1x system-auth-control
+```
 
-The corporate access port FastEthernet0/2 is configured as an
-802.1X authenticator.
+The corporate endpoint port is:
 
-
-10. 802.1X ACCESS PORT
-----------------------
-
-Interface:
-
+```text
 FastEthernet0/2
+```
 
-Configuration:
+Configured as an 802.1X authenticator.
 
-switchport access vlan 10
-switchport mode access
-authentication port-control auto
-dot1x pae authenticator
-
-
-11. ACL VERIFICATION
---------------------
+## SSH Verification
 
 Command:
 
-show access-lists
-
-ACL:
-
-GUEST_RESTRICT
-
-Rules:
-
-10  deny Guest → Corporate
-20  deny Guest → Admin
-30  deny Guest → Management
-40  permit Guest → Any
-
-
-12. ACL APPLICATION VERIFICATION
---------------------------------
-
-Command:
-
-show ip interface GigabitEthernet0/0.20
+```text
+show ip ssh
+```
 
 Verified:
 
-Inbound access list:
+```text
+SSH Enabled - version 2.0
+```
+
+SSH is used for secure remote management of NAC-SW1.
+
+## VTY Access Control
+
+Command:
+
+```text
+show running-config | section line vty
+```
+
+The VTY lines use:
+
+```text
+login authentication RADIUS_AUTH
+transport input ssh
+```
+
+A standard access list restricts management access to the Admin network:
+
+```text
+access-list 10 permit 10.10.30.0 0.0.0.255
+access-list 10 deny any
+```
+
+## Guest ACL Verification
+
+Command:
+
+```text
+show access-lists
+```
+
+The configured ACL is:
+
+```text
 GUEST_RESTRICT
+```
 
-The ACL is applied inbound on the Guest VLAN subinterface.
+The ACL prevents Guest VLAN 20 from accessing:
 
+```text
+10.10.10.0/24
+10.10.30.0/24
+10.10.99.0/24
+```
 
-13. ACL MATCH COUNTERS
-----------------------
+The ACL permits other destinations using:
 
-Verified ACL match counters demonstrate that traffic has been
-processed by the configured ACL rules.
+```text
+permit ip 10.10.20.0 0.0.0.255 any
+```
 
-Example:
-
-Guest → Corporate:
-8 matches
-
-Guest → Admin:
-4 matches
-
-Guest → Management:
-52 matches
-
-Guest → permitted destinations:
-8 matches
-
-
-14. CONFIGURATION SAVE
-----------------------
+### ACL Application
 
 Command:
 
+```text
+show ip interface GigabitEthernet0/0.20
+```
+
+The ACL is applied inbound:
+
+```text
+Inbound access list is GUEST_RESTRICT
+```
+
+## Configuration Backup
+
+The configurations were saved using:
+
+```text
 copy running-config startup-config
+```
 
 Result:
 
+```text
 [OK]
+```
 
-The running configuration has been successfully saved to
-startup-config.
+This confirms that the running configurations were saved to startup-config.
 
+## OSPF
 
-15. ETHERCHANNEL VERIFICATION
------------------------------
+OSPF is **not implemented** in the current topology.
 
-Command:
+The current design uses a single router with directly connected VLAN networks, so dynamic routing is not required.
 
-show etherchannel summary
+Therefore:
 
-Result:
-
-Number of channel-groups in use: 0
-
-No EtherChannel is implemented in the current topology.
-
-
-16. OSPF VERIFICATION
----------------------
-
-Command:
-
+```text
 show ip ospf neighbor
+```
+
+does not display OSPF neighbors.
+
+## EtherChannel
+
+EtherChannel is **not implemented** in the current topology.
+
+Verification:
+
+```text
+show etherchannel summary
+```
 
 Result:
 
-No OSPF neighbors are configured.
+```text
+Number of channel-groups in use: 0
+```
 
-The current topology uses a single router with directly connected
-VLAN networks, therefore OSPF is not implemented.
+The current topology does not contain redundant switch links requiring EtherChannel.
 
+## Verification Results File
 
-17. OVERALL VERIFICATION
-------------------------
+Detailed command outputs are available in:
 
-The following components have been verified:
+[`verification-results.txt`](./verification-results.txt)
 
-[OK] VLAN segmentation
-[OK] Router-on-a-Stick
-[OK] Inter-VLAN routing
-[OK] Management VLAN
-[OK] 802.1X configuration
-[OK] RADIUS integration
-[OK] AAA
-[OK] SSH version 2
-[OK] VTY access control
-[OK] Guest ACL restrictions
-[OK] Configuration backup
+## Overall Result
 
-Not implemented in the current topology:
+The following core components have been successfully configured and verified:
 
-[NOT IMPLEMENTED] OSPF
-[NOT IMPLEMENTED] EtherChannel
-[NOT IMPLEMENTED] MAB
-[NOT IMPLEMENTED] Endpoint profiling
+- VLAN segmentation
+- Router-on-a-Stick
+- Inter-VLAN routing
+- Management VLAN
+- AAA
+- RADIUS integration
+- 802.1X
+- SSH version 2
+- VTY access control
+- Guest ACL security
+- Configuration backup
+
+The lab provides a functional foundation for an enterprise Cisco NAC environment.
+
+## Future Enhancements
+
+Potential future enhancements include:
+
+- OSPF
+- EtherChannel
+- MAB
+- Endpoint profiling
+- Guest portal
+- Posture assessment
+- Certificate-based authentication
+- Cisco TrustSec
+- Security Group Tags (SGTs)
+- pxGrid

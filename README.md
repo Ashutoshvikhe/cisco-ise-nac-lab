@@ -1,6 +1,6 @@
 # Enterprise Cisco ISE Network Access Control (NAC) Lab
 
-A practical enterprise Network Access Control (NAC) lab demonstrating Cisco ISE/RADIUS integration, 802.1X authentication, AAA, VLAN segmentation, inter-VLAN routing, SSH-based device management, ACL-based security, and network troubleshooting using Cisco Packet Tracer.
+A practical enterprise Network Access Control (NAC) lab demonstrating Cisco ISE/RADIUS concepts, 802.1X configuration, AAA, VLAN segmentation, inter-VLAN routing, SSH-based device management, ACL-based security, network verification, and troubleshooting using Cisco Packet Tracer.
 
 ---
 
@@ -369,7 +369,7 @@ cisco-ise-nac-lab/
 
 ## Project Outcome
 
-The completed lab demonstrates an enterprise-style NAC architecture where endpoint access, authentication, network segmentation, administrative access, and Guest network restrictions are controlled through centralized authentication and network security policies.
+The completed lab demonstrates an enterprise-style NAC architecture where endpoint authentication, network segmentation, administrative access, and Guest network restrictions are implemented using 802.1X, RADIUS/AAA, VLANs, SSH, and ACL-based security controls.
 
 The project also documents configuration, verification, troubleshooting, and visual evidence of the implemented network.
 

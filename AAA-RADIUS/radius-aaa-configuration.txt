@@ -1,1 +1,84 @@
+AAA and RADIUS Configuration
+============================
 
+Device: NAC-SW1
+
+
+AAA GLOBAL CONFIGURATION
+------------------------
+
+aaa new-model
+
+aaa authentication dot1x default group radius
+
+aaa authentication login RADIUS_AUTH group radius local
+
+
+RADIUS SERVER
+-------------
+
+RADIUS Server IP:
+10.10.99.10
+
+Authentication Port:
+1645
+
+Shared Secret:
+<REDACTED>
+
+
+SSH AUTHENTICATION
+------------------
+
+line vty 0 4
+ login authentication RADIUS_AUTH
+ transport input ssh
+
+
+LOCAL USER FALLBACK
+-------------------
+
+username admin
+username admin-local
+
+Local authentication is available as a fallback when the
+RADIUS authentication server is unavailable.
+
+
+802.1X AUTHENTICATION
+---------------------
+
+aaa authentication dot1x default group radius
+
+dot1x system-auth-control
+
+
+802.1X AUTHENTICATOR PORT
+-------------------------
+
+interface FastEthernet0/2
+ authentication port-control auto
+ dot1x pae authenticator
+
+
+MANAGEMENT NETWORK
+------------------
+
+NAC-SW1:
+10.10.99.2/24
+
+RADIUS Server:
+10.10.99.10/24
+
+Default Gateway:
+10.10.99.1
+
+
+VERIFICATION COMMANDS
+---------------------
+
+show running-config | section aaa
+show running-config | include radius
+show ip ssh
+show running-config | section line vty
+show running-config | include dot1x

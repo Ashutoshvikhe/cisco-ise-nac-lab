@@ -4,7 +4,7 @@
 
 This folder documents the 802.1X Network Access Control (NAC) configuration implemented in the enterprise Cisco NAC lab.
 
-The lab uses IEEE 802.1X authentication with a Cisco Catalyst switch acting as the authenticator and a RADIUS server providing centralized authentication.
+The lab demonstrates IEEE 802.1X authentication with a Cisco Catalyst switch configured as the authenticator and a RADIUS server configured to provide centralized authentication.
 
 ## 802.1X Architecture
 
@@ -100,7 +100,7 @@ Network: 10.10.99.0/24
 
 ## Corporate VLAN
 
-The authenticated corporate endpoint is assigned to:
+The corporate endpoint access port is configured for:
 
 ```text
 VLAN 10
@@ -120,7 +120,7 @@ The authentication process can be summarized as follows:
 5. ISE-RADIUS processes the authentication request.
 6. RADIUS returns an authentication response.
 7. NAC-SW1 allows the authenticated endpoint to access the network.
-8. The endpoint operates in the Corporate VLAN.
+8. Upon successful authentication, the endpoint is permitted through the 802.1X-controlled access port.
 
 ## Verification
 

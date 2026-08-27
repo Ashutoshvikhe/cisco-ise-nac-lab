@@ -1,1 +1,57 @@
+Router-on-a-Stick Configuration
+================================
 
+Device: NAC-R1
+Physical Interface: GigabitEthernet0/0
+
+
+VLAN 10 - CORPORATE
+-------------------
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 10.10.10.1 255.255.255.0
+
+
+VLAN 20 - GUEST
+---------------
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 10.10.20.1 255.255.255.0
+ ip access-group GUEST_RESTRICT in
+
+
+VLAN 30 - ADMIN
+---------------
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 10.10.30.1 255.255.255.0
+
+
+VLAN 99 - MANAGEMENT
+--------------------
+interface GigabitEthernet0/0.99
+ encapsulation dot1Q 99
+ ip address 10.10.99.1 255.255.255.0
+
+
+SWITCH TRUNK
+------------
+NAC-SW1 GigabitEthernet0/1
+ switchport mode trunk
+
+
+ROUTER PHYSICAL INTERFACE
+-------------------------
+NAC-R1 GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+
+
+GUEST SECURITY ACL
+------------------
+ip access-list extended GUEST_RESTRICT
+ deny ip 10.10.20.0 0.0.0.255 10.10.10.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 10.10.30.0 0.0.0.255
+ deny ip 10.10.20.0 0.0.0.255 10.10.99.0 0.0.0.255
+ permit ip 10.10.20.0 0.0.0.255 any

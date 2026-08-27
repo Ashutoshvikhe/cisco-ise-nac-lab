@@ -42,9 +42,11 @@ The lab implements:
 - Guest network restrictions
 - ACL-based security
 
+
 ## Topology Diagram
 
-![Enterprise NAC Network Topology](enterprise-nac-topology.png)
+![Enterprise NAC Topology](./enterprise-nac-topology.png)
+
 
 The diagram illustrates the enterprise NAC architecture, including:
 

@@ -1,1 +1,25 @@
 
+VLAN 10
+Name: CORPORATE
+Network: 10.10.10.0/24
+Gateway: 10.10.10.1
+Access Port: FastEthernet0/2
+
+VLAN 20
+Name: GUEST
+Network: 10.10.20.0/24
+Gateway: 10.10.20.1
+Access Port: FastEthernet0/3
+
+VLAN 30
+Name: ADMIN
+Network: 10.10.30.0/24
+Gateway: 10.10.30.1
+Access Port: FastEthernet0/4
+
+VLAN 99
+Name: MANAGEMENT
+Network: 10.10.99.0/24
+Gateway: 10.10.99.1
+Management IP: NAC-SW1 10.10.99.2
+Access Port: FastEthernet0/1
